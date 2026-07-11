@@ -1,11 +1,5 @@
 namespace IT_ELECTIVE_2_PRELIM_EXAM.Models;
 
-// EXERCISE 7: Inheritance - Base/Derived Classes
-// RecipeBase is the base class for all recipe types.
-// Your task in MealRecipe and QuickRecipe:
-// - Complete the inherited fields by using proper access modifiers
-// - Use 'protected' for fields that derived classes need access to
-
 public class RecipeBase
 {
     public string Title { get; set; }
