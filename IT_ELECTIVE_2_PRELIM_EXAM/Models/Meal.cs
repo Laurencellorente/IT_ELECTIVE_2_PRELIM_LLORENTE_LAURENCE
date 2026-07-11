@@ -1,51 +1,37 @@
+using IT_ELECTIVE_2_PRELIM_EXAM.Interfaces;
+
 namespace IT_ELECTIVE_2_PRELIM_EXAM.Models;
 
-// EXERCISE 1: Encapsulation - Private Fields
-// The fields below are public. Your task:
-// - Make all fields PRIVATE
-// - Create public Properties with getters and setters
-// - The property names should match the field names (PascalCase)
-//
-// Currently, the properties below are STUBS that return wrong values.
-// Fix them to properly wrap the private fields.
-
-public class Meal
+public class MealRecipe : RecipeBase, IRecipeSearchable
 {
-    public string name;
-    public string category;
-    public string area;
-    public string instructions;
-    public string thumbnail;
-    public string tags;
+    public string Category { get; set; } = "";
+    public string Area { get; set; } = "";
 
-    // EXERCISE 1: Fix these stub properties to properly get/set from private fields
-    // After fixing, make the fields above PRIVATE
-    public string Name { get => ""; set { } }
-    public string Category { get => ""; set { } }
-    public string Area { get => ""; set { } }
-
-    public Meal()
+    public MealRecipe() : base()
     {
-        name = "";
-        category = "";
-        area = "";
-        instructions = "";
-        thumbnail = "";
-        tags = "";
     }
 
-    public Meal(string name, string category, string area)
+    public MealRecipe(string title, int prepTime, string difficulty)
+        : base(title, prepTime, difficulty)
     {
-        this.name = name;
-        this.category = category;
-        this.area = area;
-        this.instructions = "";
-        this.thumbnail = "";
-        this.tags = "";
     }
 
-    public override string ToString()
+    public MealRecipe(string title, int prepTime, string difficulty, string category, string area)
+        : base(title, prepTime, difficulty)
     {
-        return $"Meal: {Name} | Category: {Category} | Area: {Area}";
+        Category = category;
+        Area = area;
+    }
+
+    public override string GetRecipeInfo()
+    {
+        return $"{base.GetRecipeInfo()} | Category: {Category} | Area: {Area}";
+    }
+
+    public string SearchCriteria => Title;
+
+    public bool MatchesSearch(string searchTerm)
+    {
+        return Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase);
     }
 }
