@@ -1,29 +1,40 @@
-namespace IT_ELECTIVE_2_PRELIM_EXAM_HttpClient.Exercises;
+using System.Text;
+using System.Text.Json;
 
-// EXERCISE 6: POST Create Review
-// JSONPlaceholder API: https://jsonplaceholder.typicode.com/posts
-//
-// Your task:
-// 1. Create a JSON body string: { "title": "Great Pasta!", "body": "Loved this recipe", "userId": 1 }
-// 2. Wrap it in StringContent with media type "application/json"
-// 3. Send a POST request to the URL
-// 4. Assert status code is 201 Created
-// 5. Parse the response JSON and assert it contains an "id" field
-//
-// Hint: Use await client.PostAsync(url, content)
-// Hint: Use new StringContent(json, Encoding.UTF8, "application/json")
+namespace IT_ELECTIVE_2_PRELIM_EXAM_HttpClient.Exercises;
 
 public static class CreateReview
 {
     public static async Task Run(System.Net.Http.HttpClient client)
     {
-        // TODO: Create JSON string with title, body, and userId
-        // TODO: Create StringContent with the JSON and Content-Type "application/json"
-        // TODO: Send POST request to https://jsonplaceholder.typicode.com/posts
-        // TODO: Assert status code is 201 Created
-        // TODO: Parse the response JSON
-        // TODO: Assert the response has an "id" field with a value
+        string url = "https://jsonplaceholder.typicode.com/posts";
 
-        throw new NotImplementedException();
+
+        string json = @"{
+            ""title"": ""Great Pasta!"",
+            ""body"": ""Loved this recipe"",
+            ""userId"": 1
+        }";
+
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+
+        var response = await client.PostAsync(url, content);
+
+
+        if (response.StatusCode != System.Net.HttpStatusCode.Created)
+            throw new Exception("Status code is not 201 Created.");
+
+        string body = await response.Content.ReadAsStringAsync();
+
+
+        using JsonDocument document = JsonDocument.Parse(body);
+
+
+        if (!document.RootElement.TryGetProperty("id", out JsonElement id))
+            throw new Exception("Response does not contain an id.");
+
+        if (id.GetInt32() <= 0)
+            throw new Exception("Invalid id returned.");
     }
 }
